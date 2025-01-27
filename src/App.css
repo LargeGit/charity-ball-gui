@@ -1,0 +1,87 @@
+
+/* 
+* * * * * * * * {
+    outline: 1px solid red;
+}
+ */
+
+ #root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "Asap", "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+@keyframes banner-keyframes {
+  from {
+      transform: translateX(0);
+  }
+  to {
+      transform: translateX(-100%);
+  }
+}
+
+.no-print {
+  @media print {
+      display: none;
+  }
+}
+
+.keep-together {
+  page-break-inside: avoid;
+}
+
+.bar-between:after {
+  content: '|';
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.bar-between:last-child {
+  content: none;
+}
+.bar-between:hover {
+  cursor: pointer;
+}
+
+
+
+.raw-html-format {
+  p {
+      color: black;
+      padding: 0px 0px 2px 1rem;
+  }
+
+  h1, h2, h3, h4 {
+      font-size: 1.2rem;
+      color: darkred;
+      font-weight: bold;
+      padding: inherit;
+  }
+  h2 {
+      font-size: 1.1rem;
+  }
+  h3, h4 {
+      font-size: 1.0rem;
+  }
+  ul, ol {
+      padding: 0px 0px 2px 2rem;
+      color: black;
+      font-weight: normal;
+  }
+  ol > li {
+      color: darkred;
+      font-weight: bold;
+  }
+  hr {
+      margin: .8rem 0 0.8rem 0;
+      border: 1px solid darkred;
+  }
+}
+
+text {
+  font-size: 0.5rem;
+}

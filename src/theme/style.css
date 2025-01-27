@@ -1,0 +1,21 @@
+
+
+@keyframes blink {
+    0% {
+      opacity: 0;
+      }
+    100% {
+      opacity: 1;
+    }
+  }
+
+.blink-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.blinker {
+    animation: blink 300ms ease 0ms infinite alternate;
+}
+
