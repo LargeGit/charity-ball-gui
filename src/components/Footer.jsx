@@ -20,7 +20,7 @@ const SocialButton = ( {children, label, href, target} ) => {
     return (
     <chakra.button
         rounded={'full'}
-        bg='lightgray'
+        bg='pink.100'
         w='8'
         h='8'
         cursor={'pointer'}
@@ -32,7 +32,7 @@ const SocialButton = ( {children, label, href, target} ) => {
         justifyContent={'center'}
         transition={'background 0.3s ease'}
         _hover={{
-        bg: 'darkgray',
+        bg: 'pink.300',
     }}>
         <VisuallyHidden>{label}</VisuallyHidden>
     {children}
@@ -46,13 +46,13 @@ export default function Footer() {
             px='8'
             pb='4'
             pt={10}
-            direction={{ base: 'column', md: 'row' }}
+            direction={{ base: 'column', sm: 'row' }}
             gap='6'
-            justify={{ base: 'center', md: 'space-between' }}
-            align={{ base: 'center', md: 'center' }}>
+            justify={{ base: 'center', sm: 'space-between' }}
+            align={{ base: 'center', sm: 'center' }}>
             
         <a href='https://coppafeel.org/' target='_blank' rel="noreferrer">
-            <Image w='160px' src={coppaFeelLogo} alt='Coppa' opacity={isTouchScreen ? '1.0' : '0.6'} 
+            <Image w='140px' src={coppaFeelLogo} alt='Coppa' opacity={isTouchScreen ? '1.0' : '0.6'} 
             _hover={{
                 opacity: '1.0'
             }}
@@ -71,7 +71,7 @@ export default function Footer() {
             </SocialButton>
         </Stack>
         <a href='https://futuredreams.org.uk/' target='_blank' rel="noreferrer">
-            <Image w='160px' src={fdLogo} alt='FD' opacity={isTouchScreen ? '1.0' : '0.6'} 
+            <Image w='140px' src={fdLogo} alt='FD' opacity={isTouchScreen ? '1.0' : '0.6'} 
             _hover={{
                 opacity: '1.0'
             }}

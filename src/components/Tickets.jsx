@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack, Fieldset, Image, Heading, VStack, HStack, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { Box, Stack, Fieldset, Image, Heading, VStack, Separator, Flex, useBreakpointValue } from "@chakra-ui/react";
 
 import { Field } from './ui/field'
 
@@ -22,12 +23,12 @@ import { SlideDownHeading, FadeInBoxLeft, FadeInBoxRight } from 'chakra-react-co
 import { restRequest } from 'js-common/utils'
 import fullJustGiving from '../img/fullJustGiving.png';
 import { POST, BASE_URL, TICKET_PRICE } from "js-common/constants";
+import { SUCCESS, ERROR, WARNING } from "js-common/constants";
 
 const Text = (props) => {
     return (
         <Box
             fontSize={['.8rem', '1rem']}
-            p='4'
             {...props}
         >
             {props.children}
@@ -55,37 +56,37 @@ const choiceKeys = ['starter', 'main', 'dessert'];
 export const Tickets = ({
 
     keyProps,
-    setNotification
+    setNotification,
+    url=`${BASE_URL}charity-ball/`
 
-}) => {
+}) => { 
 
-   
+    const navigate = useNavigate()
 
     const defaultBookingForm = {
         host_name : '',
         host_email:  '',
         host_phone: '',
         host_address:  '',
-        number_of_tickets: 4,
-        paid: false,
         comment: '',
     };
 
     const defaultGuestArray = [
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
-        {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
+        {guest_name : '', dietary_requirements:  '', starter: 'starter', main: 'main', dessert: 'dessert',},
     ]
     
     const [bookingForm, setBookingForm] = useState(defaultBookingForm)
     const [guestArray, setGuestArray] = useState(defaultGuestArray)
+    const [numberOfTickets, setNumberOfTickets] = useState(4)
     const [paid, setPaid] = useState(false)
     const [step, setStep] = useState(1)
 
@@ -107,18 +108,15 @@ export const Tickets = ({
         setBookingFormError(defaultBookingFormError)
     ;}
     
-    const onNumberOfTicketsChange = (valueAsNumber) => {
-        setBookingForm({...bookingForm, number_of_tickets: valueAsNumber})
-    }
-
-
     const onPostSuccess = () => {
-        setNotification({ text: "Thank you for your booking. Gemma will be in touch.", level: "success" });
+        setNotification({ text: "Thank you for your booking. Gemma will be in touch.", level: SUCCESS });
         setBookingForm(defaultBookingForm);
         setGuestArray(defaultGuestArray);
+        navigate('/home')
     }
+
     const onPostFailure = (response) => {
-        setNotification({ text: `${response.detail}`, level: "warning" });
+        setNotification({ text: 'Oops. Something went wrong. Please try again or contact Gemma', level: ERROR });
     }
 
     const handleSubmit = () => {
@@ -152,67 +150,128 @@ export const Tickets = ({
             item.host_email = bookingForm.host_email;
             item.host_phone = bookingForm.host_phone;
             item.host_address = bookingForm.host_address;
-            item.number_of_tickets = bookingForm.number_of_tickets;
-            item.paid = bookingForm.paid;
+            item.number_of_tickets = numberOfTickets;
+            item.paid = paid;
             item.comment = bookingForm.comment;
         })
         
-        tempData = tempData.slice(0, bookingForm.number_of_tickets);
+        tempData = tempData.slice(0, numberOfTickets);
 
-        restRequest(POST, putUrl, onPostSuccess, onPostFailure, tempData, null)
+        restRequest(POST, url, onPostSuccess, onPostFailure, tempData, null)
 
     };
 
-    const Contact= () => {
+    const contact = () => {
         return (
-            <FadeInBoxRight>
                 <Fieldset.Root>
-                    <Stack>
-                        <Fieldset.Legend>1) enter your contact details</Fieldset.Legend>
-                        <Fieldset.HelperText></Fieldset.HelperText>
-                    </Stack>
+                <Fieldset.Legend>1) enter your contact details</Fieldset.Legend>
                 
                 <Fieldset.Content>
                     <Field label='Name' invalid={bookingFormError.host_name} errorText='name is required'>
                         <Input name='host_name' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
                     </Field>
                     <Field label='Email Address'  invalid={bookingFormError.host_email} errorText='email address is required'>
-                        <Input name='host_email' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                        <Input name='host_email' type='text' value={bookingForm.host_email} onChange={handleInputChange} />
                     </Field>
                     <Field label='Phone Number'  invalid={bookingFormError.host_phone} errorText='phone number is required'>
-                        <Input name='host_phone' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                        <Input name='host_phone' type='text' value={bookingForm.host_phone} onChange={handleInputChange} />
                     </Field>
                     <Field label='Address'  invalid={bookingFormError.host_address} errorText='address is required'>
-                        <Input name='host_address' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                        <Input name='host_address' type='text' value={bookingForm.host_address} onChange={handleInputChange} />
                     </Field>
                     <Field label='Comments' helperText='e.g. others you would like to be seated with (or anything else)'>
-                        <Input name='comment' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                        <Input name='comment' type='text' value={bookingForm.comment} onChange={handleInputChange} />
                     </Field>
                 </Fieldset.Content>
                 </Fieldset.Root>
-            </FadeInBoxRight>
         )
     }
-    const Guests= () => {
+
+    const guests = () => {
         return (
             <Box>
-                <Heading>2) enter guest names and food choices</Heading>
-                <Text pb='0' fontSize={'.9rem'}>
-                <a href='https://liveloveandsparkle.co.uk/menu' target='_blank' rel="noreferrer">
-                    click here to open the menu in a separate window
-                </a>
+                <Fieldset.Root>
+                    <Stack>
+                        <Fieldset.Legend>2) enter guest names and food choices</Fieldset.Legend>
+                        <Fieldset.HelperText></Fieldset.HelperText>
+                    </Stack>
+                <Text py='0' fontSize={'.9rem'}>
+                    <a href='https://liveloveandsparkle.co.uk/menu' target='_blank' rel="noreferrer">
+                        click here to open the menu in a separate window
+                    </a>
                 </Text>
+
+                <Field helperText='How many tickets do you require? (including yourself, if necessary)'>
+                    <NumberInputRoot value={numberOfTickets} width={'100px'} min='1' max='10'
+                        onValueChange={(e) => setNumberOfTickets(e.value)}
+                    >
+                        <NumberInputField />
+                    </NumberInputRoot>
+                </Field>
+                <Box>
+                    {guestArray.slice(0, numberOfTickets).map( (guest, guestIndex) => {
+                        return (
+                            <Fieldset.Content  key={guestIndex}>
+                                <Separator  mt='10' variant='solid' colorPalette='pink' size='md'/>
+                                <Field label={`guest ${guestIndex+1} name:`}>
+                                    <Input name={`name-${guestIndex}`} type='text' value={guestArray[guestIndex].guest_name} 
+                                        onChange={ (e) => { setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], guest_name: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
+                                </Field>
+
+                                <Flex pr='4' justify='space-between' gap='4'>
+                                    <Field><MenuMenu course='starter' guestIndex={guestIndex}/></Field>
+                                    <Field><MenuMenu course='main' guestIndex={guestIndex}/></Field>
+                                    <Field><MenuMenu course='dessert' guestIndex={guestIndex}/></Field>
+                                </Flex>
+
+                                <Field label='dietery requirements:'>
+                                    <Input key='dietary' name={`dietary-${guestIndex}`} type='text' value={guestArray[guestIndex].dietary_requirement} 
+                                        onChange={ (e) => { setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], dietary_requirment: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
+                                </Field>
+
+                            </Fieldset.Content>
+                        )
+                    })}
+                </Box>
+                </Fieldset.Root>
             </Box>
         )
     }
 
-    const Payment= () => {
+    const MenuMenu = ({course, guestIndex}) => {
+
         return (
-            <Box>
-                <Heading>3) please go to the JustGiving site to make payment</Heading>
-                <Box p='2' m='2'>
-                <Text>
-                    Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {bookingForm.number_of_tickets} guest{(bookingForm.number_of_tickets > 1) ? 's'  : ''} is £{TICKET_PRICE * bookingForm.number_of_tickets}
+            <MenuRoot>
+                <MenuTrigger asChild>
+                    <Button variant="outline" size="sm" colorPalette='pink'>
+                        {guestArray[guestIndex][course] ? guestArray[guestIndex][course] : course}
+                    </Button>
+                </MenuTrigger>
+                <MenuContent>
+                    <MenuItem value={choices[course][0]}
+                        onClick={() => {setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], [course]: choices[course][0]}, ...guestArray.slice(guestIndex +1)])} } >
+                        {choices[course][0]}
+                    </MenuItem>
+                    <MenuItem value={choices[course][1]}
+                        onClick={() => {setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], [course]: choices[course][1]}, ...guestArray.slice(guestIndex +1)])} } >
+                        {choices[course][1]}
+                    </MenuItem>
+                </MenuContent>
+            </MenuRoot>
+        )
+    }
+
+    const payment= () => {
+        return (
+            <Fieldset.Root>
+            <Stack>
+                <Fieldset.Legend>3) please go to the JustGiving site to make payment</Fieldset.Legend>
+                <Fieldset.HelperText></Fieldset.HelperText>
+            </Stack>
+        
+            <Fieldset.Content>
+            <Text>
+                    Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {numberOfTickets} guest{(numberOfTickets > 1) ? 's'  : ''} is £{TICKET_PRICE * numberOfTickets}
                 </Text>
 
                 <a href='https://www.justgiving.com/crowdfunding/livelovesparkle' target='_blank' rel="noreferrer">
@@ -237,13 +296,13 @@ export const Tickets = ({
                         Submit
                     </Button>
                 </Stack>
-                </Box>
-            </Box>
+            </Fieldset.Content>
+            </Fieldset.Root>
         )
     }
 
     return ( 
-        <Box pl={[2,8]} maxW={useBreakpointValue({ base: 'xl', md: '3xl' })}>
+        <Box px={[1,2,4,8]} maxW='3xl'>
             
             <SlideDownHeading>Booking Form</SlideDownHeading>
             <FadeInBoxLeft>
@@ -270,9 +329,9 @@ export const Tickets = ({
                 </Button>
                 </StepsNextTrigger>
             </Flex>
-            <StepsContent index={0}><Contact/></StepsContent>
-            <StepsContent index={1}><Guests/></StepsContent>
-            <StepsContent index={2}><Payment/></StepsContent>
+            <StepsContent index={0}>{contact()}</StepsContent>
+            <StepsContent index={1}>{guests()}</StepsContent>
+            <StepsContent index={2}>{payment()}</StepsContent>
 
             </StepsRoot>
    
@@ -340,7 +399,7 @@ return (
             </Text>
             <Box p='2' pt='0' m='2' maxW={'600px'}>
             <Box>How many tickets do you require? (including yourself, if necessary)</Box>
-            <NumberInputRoot value={bookingForm.number_of_tickets} width={'100px'} min='1' max='10'
+            <NumberInputRoot value={numberOfTickets} width={'100px'} min='1' max='10'
                 onChange={(valueAsNumber) => onNumberOfTicketsChange(valueAsNumber)}
             >
                 <NumberInputField />
@@ -348,7 +407,7 @@ return (
 
             <Box pt='4' width='100%'>
                 {
-                guestArray.slice(0, bookingForm.number_of_tickets).map( (guest, guestIndex) => {
+                guestArray.slice(0, numberOfTickets).map( (guest, guestIndex) => {
                     return (
                     <VStack py='4' borderBottom={'solid 2px rgba(170, 51, 106, 0.4)'} width='100%' key={guestIndex}>
                         <HStack width='100%'>
@@ -415,7 +474,7 @@ return (
             <Heading>3) please go to the JustGiving site to make payment</Heading>
             <Box p='2' m='2'>
             <Text>
-                Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {bookingForm.number_of_tickets} guest{(bookingForm.number_of_tickets > 1) ? 's'  : ''} is £{TICKET_PRICE * bookingForm.number_of_tickets}
+                Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {numberOfTickets} guest{(numberOfTickets > 1) ? 's'  : ''} is £{TICKET_PRICE * numberOfTickets}
             </Text>
 
             <a href='https://www.justgiving.com/crowdfunding/livelovesparkle' target='_blank' rel="noreferrer">

@@ -26,7 +26,7 @@ import { Tickets } from './components/Tickets.jsx';
 import Schedule from './components/Schedule.jsx';
 
 import { Report } from './components/Report.jsx';
-import HomeOnBackground from './components/Home.jsx';
+import {HomeOnBackground} from './components/Home.jsx';
 import { Menu } from './components/Home.jsx';
 import { MenuWithSubnavigation } from './components/NavBar2.jsx';
 import { TbDeviceDesktopSearch } from 'react-icons/tb';
@@ -63,14 +63,14 @@ function App() {
         <ChakraProvider  value={mySystem} >
             <Routes>
                 <Route path="/" element={ <Layout keyProps={keyProps} notification={notification} setNotification={setNotification}/> } >
-                <Route path='' element={<Home />} />
-                <Route path='home' element={<Home />} />
+                <Route path='' element={<HomeOnBackground />} />
+                <Route path='home' element={<HomeOnBackground />} />
                 <Route path='menu' element={<Menu />} />
                 <Route path='test' element={<HomeOnBackground />} />
                 <Route path='story' element={<MyStory/>} />
                 <Route path='sponsors' element={<Sponsors/>} />
                 <Route path='raffle' element={<Raffle/>} />
-                <Route path='tickets' element={<Tickets/>} />
+                <Route path='tickets' element={<Tickets setNotification={setNotification}/>} />
                 <Route path='faqs' element={<Faqs/>} />
                 <Route path='band' element={<Band/>} />
                 <Route path='schedule' element={<Schedule/>} />

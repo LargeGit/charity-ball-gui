@@ -9,6 +9,11 @@ export default defineConfig({
     },
     server: {
         proxy: {
+            '/api/charity-ball/': {
+                target: 'http://localhost:5045/',
+                secure: false,
+                changeOrigin: true
+            },
             '/api/banner/': {
                 target: 'http://localhost:5010/',
                 secure: false,
