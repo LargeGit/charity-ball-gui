@@ -9,22 +9,20 @@ import { SlideDownHeading, FadeInBoxRight } from 'chakra-react-common/miscellane
 //import { FadeInBoxLeft } from 'chakra-react-common/miscellaneous';
 
 
-export default function Faqs (props) {
+export const Faqs = (props) => {
 
     return (
         <Box p='6' pl={[2,8]} width={useBreakpointValue({ base: "100vw", sm: '95vw', md: "90vw", lg: '850px' })}>
         <SlideDownHeading>FAQs</SlideDownHeading>
         <FadeInBoxRight>
-        <AccordionRoot p='8' m='2' allowToggle={true} allowMultiple={false}>
+        <AccordionRoot spaceY='4' collapsible multiple={false}>
         {
             faqData.map((item, index) => {
             return (
 
-                <AccordionItem key={index} >
+                <AccordionItem key={index} value={index}>
                     <AccordionItemTrigger _expanded={{ bg: 'pink.100', fontWeight: 'bold'}} >
-                        <Box as="span" flex='1' textAlign='left'  >
                         {item.title}
-                        </Box>
                     </AccordionItemTrigger>
                     <AccordionItemContent pb='4'>
                     {item.text}

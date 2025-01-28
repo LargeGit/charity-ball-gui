@@ -16,6 +16,10 @@
 
 }
 
+li::marker {
+  color: #db2777;
+}
+
 @keyframes banner-keyframes {
   from {
       transform: translateX(0);

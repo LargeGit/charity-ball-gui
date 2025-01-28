@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //import { Link } from "react-router-dom";
 
-import { FormControl, FormLabel, FormHelperText, FormErrorMessage, Button, Heading, Box} from "@chakra-ui/react";
+import { Fieldset, Box, Button, Heading} from "@chakra-ui/react";
 //import {  Text, Input, Image, IconButton } from "@chakra-ui/react";
 
 import { Input } from "@chakra-ui/react";
@@ -18,7 +18,7 @@ import { GET, BASE_URL } from "js-common/constants";
 
 
 
-export default function Report ( props ) {
+export const Report = ( props ) => {
 
     const [passkey, setPasskey] = useState('')
     const [isPasskeyError, setIsPasskeyError] = useState(false)
@@ -122,15 +122,15 @@ export default function Report ( props ) {
         <>
         <Box p='6' m='4' pl={[2,8]} >
         <Heading pb={'60px'} color='pink.600' size='md'>Access Booking Reports</Heading>
-        <FormControl isInvalid={isPasskeyError} {...props}>
-            <FormLabel>Passkey</FormLabel>
+        <Fieldset isInvalid={isPasskeyError} {...props}>
+            <Box>Passkey</Box>
             <Input id='passkey' type='password' value={passkey} onChange={handlePasskeyInputChange} />
             {!isPasskeyError ? (
-            <FormHelperText>
+            <Box>
                 Enter your passkey to access the report
-            </FormHelperText>
+            </Box>
             ) : (
-            <FormErrorMessage>cannot be blank.</FormErrorMessage>
+            <Box>cannot be blank.</Box>
             )}
         <Button
             mt='4'
@@ -141,7 +141,7 @@ export default function Report ( props ) {
         >
             Submit
         </Button>
-        </FormControl>
+        </Fieldset>
         </Box>
         </>
         } 

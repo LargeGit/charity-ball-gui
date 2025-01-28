@@ -43,13 +43,13 @@ const SocialButton = ( {children, label, href, target} ) => {
 export default function Footer() {
     return (
         <Flex
-        px='8'
-        pb='4'
-        pt={10}
-        direction={{ base: 'column', md: 'row' }}
-        gap='6'
-        justify={{ base: 'center', md: 'space-between' }}
-        align={{ base: 'center', md: 'center' }}>
+            px='8'
+            pb='4'
+            pt={10}
+            direction={{ base: 'column', md: 'row' }}
+            gap='6'
+            justify={{ base: 'center', md: 'space-between' }}
+            align={{ base: 'center', md: 'center' }}>
             
         <a href='https://coppafeel.org/' target='_blank' rel="noreferrer">
             <Image w='160px' src={coppaFeelLogo} alt='Coppa' opacity={isTouchScreen ? '1.0' : '0.6'} 

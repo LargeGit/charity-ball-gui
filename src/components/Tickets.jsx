@@ -1,131 +1,65 @@
-import React, { useEffect } from "react";
-import { FormControl, FormHelperText, FormErrorMessage, HStack,
-  Image, Button, Box, Heading, Checkbox, VStack,
-  useBreakpointValue } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Box, Stack, Fieldset, Image, Heading, VStack, HStack, Flex, useBreakpointValue } from "@chakra-ui/react";
+
+import { Field } from './ui/field'
+
+import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsNextTrigger, StepsPrevTrigger, StepsRoot } from "./ui/steps"
+import { Checkbox } from "./ui/checkbox"
 
 import { NumberInputRoot, NumberInputLabel, NumberInputField } from "./ui/number-input";  
-import { Menu, MenuList, MenuItem  } from "@chakra-ui/react";  
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger, MenuItemGroup, MenuSeparator, MenuTriggerItem } from './ui/menu';
 import { Button } from "@chakra-ui/react"; 
 
 import { FaChevronDown } from "react-icons/fa";
 
-
-import { FormLabel as ChakraFormLabel } from "@chakra-ui/react";
-import { Input as ChakraInput } from "@chakra-ui/react";
-import { Text as ChakraText } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 
 import { SlideDownHeading, FadeInBoxLeft, FadeInBoxRight } from 'chakra-react-common/miscellaneous';
 
 //import { FaBeer, FaAngry } from 'react-icons/fa';
 //import { IoMdClose, IoMdMenu } from 'react-icons/io';
 
-//import { restRequest } from 'js-common/utils'
+import { restRequest } from 'js-common/utils'
 import fullJustGiving from '../img/fullJustGiving.png';
 import { POST, BASE_URL, TICKET_PRICE } from "js-common/constants";
 
-
-const ChakraButton = (props) => {
-  return (
-    <Button
-      border='solid 1px pink'
-      fontWeight='normal'
-      fontSize={['.7rem', '.8rem']}
-      bg='white'
-      width='30%'
-      as={Button}
-      rightIcon={<FaChevronDown />}
-    >
-      {props.children}
-    </Button>
-  )  
-}
-
 const Text = (props) => {
-  return (
-    <ChakraText
-      fontSize={['.8rem', '1rem']}
-      p='4'
-      {...props}
-      >
-      {props.children}
-    </ChakraText>
-  )
+    return (
+        <Box
+            fontSize={['.8rem', '1rem']}
+            p='4'
+            {...props}
+        >
+            {props.children}
+        </Box>
+    )
 };
-
-const Input = (props) => {
-  return (
-    <ChakraInput
-      fontSize={['.8rem', '1rem']}
-      maxW={'400px'}
-      {...props}
-      >
-      {props.children}
-    </ChakraInput>
-  )
-};
-
-const FormLabel = (props) => {
-  return (
-    <ChakraFormLabel
-      pt='2'
-      fontSize={['.8rem', '1rem']} 
-      {...props}
-      >
-      {props.children}
-    </ChakraFormLabel>
-  )
-};
-
-const Heading1 = (props) => {
-  return (
-    <Heading
-      color='pink.600'
-      size={['md', 'lg']}
-      {...props}
-      >
-      {props.children}
-    </Heading>
-  )
-};
-
-const Heading2 = (props) => {
-  return (
-    <Heading
-      pt='6'
-      color='pink.500'
-      size={['sm', 'md']}
-      {...props}
-      >
-      {props.children}
-    </Heading>
-  )
-};
-
 
 const choices = {
-  starter: [
-    'cured salmon',
-    'tomato tart',
-  ],
-  main: [
-    'slow cook beef',
-    'roasted peppers',
-  ],
-  dessert: [
-    'sharing platter',
-    'vegan option',
-  ],
+    starter: [
+        'cured salmon',
+        'tomato tart',
+    ],
+    main: [
+        'slow cook beef',
+        'roasted peppers',
+    ],
+    dessert: [
+        'sharing platter',
+        'vegan option',
+    ],
 }
 
 const choiceKeys = ['starter', 'main', 'dessert'];
 
+export const Tickets = ({
 
-export default function Tickets (props) {
+    keyProps,
+    setNotification
 
-  
-    const [state, setNotification] = useToastHook();
+}) => {
 
-    
+   
 
     const defaultBookingForm = {
         host_name : '',
@@ -150,8 +84,14 @@ export default function Tickets (props) {
         {guest_name : '', dietary_requirements:  '', starter_choice: 'starter', main_choice: 'main', dessert_choice: 'dessert',},
     ]
     
-    const [bookingForm, setBookingForm] = React.useState(defaultBookingForm)
-    const [guestArray, setGuestArray] = React.useState(defaultGuestArray)
+    const [bookingForm, setBookingForm] = useState(defaultBookingForm)
+    const [guestArray, setGuestArray] = useState(defaultGuestArray)
+    const [paid, setPaid] = useState(false)
+    const [step, setStep] = useState(1)
+
+    useEffect(() => {
+        setStep(0)
+    }, [] );
 
     const defaultBookingFormError = {
         host_name : false,
@@ -160,7 +100,7 @@ export default function Tickets (props) {
         host_address:  false,
     };
 
-    const [bookingFormError, setBookingFormError] = React.useState(defaultBookingFormError)
+    const [bookingFormError, setBookingFormError] = useState(defaultBookingFormError)
 
     const handleInputChange = (e) => {
         setBookingForm({...bookingForm, [e.target.name]: e.target.value})
@@ -169,6 +109,16 @@ export default function Tickets (props) {
     
     const onNumberOfTicketsChange = (valueAsNumber) => {
         setBookingForm({...bookingForm, number_of_tickets: valueAsNumber})
+    }
+
+
+    const onPostSuccess = () => {
+        setNotification({ text: "Thank you for your booking. Gemma will be in touch.", level: "success" });
+        setBookingForm(defaultBookingForm);
+        setGuestArray(defaultGuestArray);
+    }
+    const onPostFailure = (response) => {
+        setNotification({ text: `${response.detail}`, level: "warning" });
     }
 
     const handleSubmit = () => {
@@ -182,15 +132,15 @@ export default function Tickets (props) {
         };
 
         for (var field in bookingFormError) {
-        if (bookingForm[field] === '') {
-            tempBookingFormError[field] = true
-            isOverallError = true;
-        }
+            if (bookingForm[field] === '') {
+                tempBookingFormError[field] = true
+                isOverallError = true;
+            }
         }
 
         if (isOverallError) {
-        setBookingFormError(tempBookingFormError)
-        return
+            setBookingFormError(tempBookingFormError)
+            return
         };
 
         setBookingFormError(defaultBookingFormError)
@@ -198,132 +148,202 @@ export default function Tickets (props) {
         var tempData = guestArray;
         
         tempData.forEach((item) => {
-        item.host_name = bookingForm.host_name;
-        item.host_email = bookingForm.host_email;
-        item.host_phone = bookingForm.host_phone;
-        item.host_address = bookingForm.host_address;
-        item.number_of_tickets = bookingForm.number_of_tickets;
-        item.paid = bookingForm.paid;
-        item.comment = bookingForm.comment;
+            item.host_name = bookingForm.host_name;
+            item.host_email = bookingForm.host_email;
+            item.host_phone = bookingForm.host_phone;
+            item.host_address = bookingForm.host_address;
+            item.number_of_tickets = bookingForm.number_of_tickets;
+            item.paid = bookingForm.paid;
+            item.comment = bookingForm.comment;
         })
         
         tempData = tempData.slice(0, bookingForm.number_of_tickets);
 
-        // setNotification( { text: JSON.stringify(tempData), level: "success" } );
-
-        const fetchData = {
-        method: POST,
-        body: JSON.stringify(tempData),
-        headers: new Headers({
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json',
-        })
-        }
-
-        var wasSuccessful = true;
-
-        fetch(`${BASE_URL}booking/`, fetchData)
-        
-        .then( response=>{
-            wasSuccessful = response.ok;
-            return ( response.json() )
-        })
-
-        .then( data=>{
-            
-            if (wasSuccessful) {
-            setNotification({ text: "Thank you for your booking. Gemma will be in touch.", level: "success" });
-            setBookingForm(defaultBookingForm);
-            setGuestArray(defaultGuestArray);
-            } else {
-            setNotification({ text: `${data.detail}`, level: "warning" });
-            }
-        })
-        
-        .catch((error) => {
-            setNotification({ text: `Oops, something went wrong! ${error}`, level: "error" });
-        })
+        restRequest(POST, putUrl, onPostSuccess, onPostFailure, tempData, null)
 
     };
 
-    return ( 
-        <>
-        <Box pt='8' pl={[2,8]} maxW={useBreakpointValue({ base: 'xl', md: '3xl' })}>
+    const Contact= () => {
+        return (
+            <FadeInBoxRight>
+                <Fieldset.Root>
+                    <Stack>
+                        <Fieldset.Legend>1) enter your contact details</Fieldset.Legend>
+                        <Fieldset.HelperText></Fieldset.HelperText>
+                    </Stack>
+                
+                <Fieldset.Content>
+                    <Field label='Name' invalid={bookingFormError.host_name} errorText='name is required'>
+                        <Input name='host_name' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                    </Field>
+                    <Field label='Email Address'  invalid={bookingFormError.host_email} errorText='email address is required'>
+                        <Input name='host_email' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                    </Field>
+                    <Field label='Phone Number'  invalid={bookingFormError.host_phone} errorText='phone number is required'>
+                        <Input name='host_phone' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                    </Field>
+                    <Field label='Address'  invalid={bookingFormError.host_address} errorText='address is required'>
+                        <Input name='host_address' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                    </Field>
+                    <Field label='Comments' helperText='e.g. others you would like to be seated with (or anything else)'>
+                        <Input name='comment' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
+                    </Field>
+                </Fieldset.Content>
+                </Fieldset.Root>
+            </FadeInBoxRight>
+        )
+    }
+    const Guests= () => {
+        return (
+            <Box>
+                <Heading>2) enter guest names and food choices</Heading>
+                <Text pb='0' fontSize={'.9rem'}>
+                <a href='https://liveloveandsparkle.co.uk/menu' target='_blank' rel="noreferrer">
+                    click here to open the menu in a separate window
+                </a>
+                </Text>
+            </Box>
+        )
+    }
 
-        <Box>
+    const Payment= () => {
+        return (
+            <Box>
+                <Heading>3) please go to the JustGiving site to make payment</Heading>
+                <Box p='2' m='2'>
+                <Text>
+                    Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {bookingForm.number_of_tickets} guest{(bookingForm.number_of_tickets > 1) ? 's'  : ''} is £{TICKET_PRICE * bookingForm.number_of_tickets}
+                </Text>
+
+                <a href='https://www.justgiving.com/crowdfunding/livelovesparkle' target='_blank' rel="noreferrer">
+                    <Image p='5' w='160px' src={fullJustGiving} alt='JustGiving' filter={'grayscale(80%)'} _hover={{filter: 'none'}}/>
+                </a>
+                <Stack>
+                    <Checkbox pt='4' size='md' colour='pink.500' colorScheme='pink'
+                        checked={paid}
+                        onCheckedChange={(e) => setPaid(!paid)}
+                        >
+                        I confirm JustGiving payment has been made
+                    </Checkbox>
+
+                    <Button
+                        disabled={!paid}
+                        onClick={handleSubmit}
+                        mt='4'
+                        colorScheme='pink'
+                        type='submit'
+                        maxWidth='150px'
+                    >
+                        Submit
+                    </Button>
+                </Stack>
+                </Box>
+            </Box>
+        )
+    }
+
+    return ( 
+        <Box pl={[2,8]} maxW={useBreakpointValue({ base: 'xl', md: '3xl' })}>
+            
             <SlideDownHeading>Booking Form</SlideDownHeading>
             <FadeInBoxLeft>
-            <Text>
-            Follow the four steps below, to book your places at the event.
-            </Text>
+                <Text>Follow the three steps below, to book your places at the event.</Text>
             </FadeInBoxLeft>
-        </Box>
 
-        
+            <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} 
+                count={3} size='xs' colorPalette='pink' mt='8'
+                variant='solid'>
+            <StepsList>
+                <StepsItem index={0} title="contact" />
+                <StepsItem index={1} title="guests" />
+                <StepsItem index={2} title="payment" />
+            </StepsList>
+            <Flex justify='space-between'>
+                <StepsPrevTrigger asChild>
+                <Button variant="outline" size="sm">
+                    Prev
+                </Button>
+                </StepsPrevTrigger>
+                <StepsNextTrigger asChild>
+                <Button variant="outline" size="sm" disabled={step === 2}>
+                    Next
+                </Button>
+                </StepsNextTrigger>
+            </Flex>
+            <StepsContent index={0}><Contact/></StepsContent>
+            <StepsContent index={1}><Guests/></StepsContent>
+            <StepsContent index={2}><Payment/></StepsContent>
+
+            </StepsRoot>
+   
+        </Box>
+    )
+};
+
+/* 
+return ( 
+
         <FadeInBoxRight>
-            <Heading2>1) enter your contact details</Heading2>
+            <Heading>1) enter your contact details</Heading>
             <Box p='2' m='2'>
-            <FormControl isInvalid={bookingFormError.host_name} isRequired>
-            <FormLabel>Name</FormLabel>
+            <Fieldset isInvalid={bookingFormError.host_name} isRequired>
+            <Box>Name</Box>
                 <Input name='host_name' type='text' value={bookingForm.host_name} onChange={handleInputChange} />
-                {!bookingFormError.host_name ? (
+                {!bookingFormError.host_name ?
                 null
-                ) : (
-                <FormErrorMessage>name is required.</FormErrorMessage>
-                )}
-            </FormControl>
-            <FormControl  isInvalid={bookingFormError.host_email} isRequired>
-                <FormLabel>Email Address</FormLabel>
+                :
+                <Box>name is required.</Box>
+                }
+            </Fieldset>
+            <Fieldset  isInvalid={bookingFormError.host_email} isRequired>
+                <Box>Email Address</Box>
                 <Input name='host_email' type='email' value={bookingForm.host_email} onChange={handleInputChange} />
-                {!bookingFormError.host_email ? (
+                {!bookingFormError.host_email ?
                 null
-                ) : (
-                <FormErrorMessage>email is required.</FormErrorMessage>
-                )}
-            </FormControl>
-            <FormControl  isInvalid={bookingFormError.host_phone} isRequired>
-                <FormLabel>Phone Number</FormLabel>
+                :
+                <Box>email is required.</Box>
+                }
+            </Fieldset>
+            <Fieldset  isInvalid={bookingFormError.host_phone} isRequired>
+                <Box>Phone Number</Box>
                 <Input name='host_phone' type='tel' value={bookingForm.host_phone} onChange={handleInputChange} />
-                {!bookingFormError.host_phone ? (
+                {!bookingFormError.host_phone ? 
                 null
-                ) : (
-                <FormErrorMessage>phone number is required.</FormErrorMessage>
-                )}
-            </FormControl>
-            <FormControl isInvalid={bookingFormError.host_address} isRequired>
-                <FormLabel>Address</FormLabel>
+                :
+                <Box>phone number is required.</Box>
+                }
+            </Fieldset>
+            <Fieldset isInvalid={bookingFormError.host_address} isRequired>
+                <Box>Address</Box>
                 <Input name='host_address' type='text' value={bookingForm.host_address} onChange={handleInputChange} />
-                {!bookingFormError.host_address ? (
+                {!bookingFormError.host_address ? 
                 null
-                ) : (
-                <FormErrorMessage>address is required.</FormErrorMessage>
-                )}
-            </FormControl>
-            <FormControl>
-            <FormLabel pb='0'   mb='0'>Comments</FormLabel>
+                :
+                <Box>address is required.</Box>
+                }
+            </Fieldset>
+            <Fieldset>
+            <Box pb='0'   mb='0'>Comments</Box>
             <Text p='0' fontSize={'.8rem'} >e.g. others you would like to be seated with (or anything else)</Text>
                 <Input name='comment' type='text' value={bookingForm.comment} onChange={handleInputChange} />
-            </FormControl>
+            </Fieldset>
             </Box>
-            </FadeInBoxRight>
+        </FadeInBoxRight> 
+
 
         <FadeInBoxLeft>
-            <Heading2>2) enter guest names and food choices</Heading2>
+            <Heading>2) enter guest names and food choices</Heading>
             <Text pb='0' fontSize={'.9rem'}>
             <a href='https://liveloveandsparkle.co.uk/menu' target='_blank' rel="noreferrer">
                 click here to open the menu in a separate window
             </a>
             </Text>
             <Box p='2' pt='0' m='2' maxW={'600px'}>
-            <FormLabel>How many tickets do you require? (including yourself, if necessary)</FormLabel>
+            <Box>How many tickets do you require? (including yourself, if necessary)</Box>
             <NumberInputRoot value={bookingForm.number_of_tickets} width={'100px'} min='1' max='10'
                 onChange={(valueAsNumber) => onNumberOfTicketsChange(valueAsNumber)}
             >
-            <NumberInputField />
-                <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-                </NumberInputStepper>
+                <NumberInputField />
             </NumberInputRoot>
 
             <Box pt='4' width='100%'>
@@ -343,34 +363,30 @@ export default function Tickets (props) {
                         {
                             choiceKeys.map( (course, courseIndex) => {
                             return (
+                                <MenuRoot key={courseIndex}>
+                                    <MenuTrigger asChild>
+                                        <Box mr='8' _hover={{color:'pink.600'}}>
+                                            {guestArray[guestIndex][`${course}_choice`]}
+                                        </Box>
+                                    </MenuTrigger>
 
-                                <Menu key={courseIndex}>
-                                <Button
-                                name={`${course}-${courseIndex}`}>
-                                {guestArray[guestIndex][`${course}_choice`]}
-                                </Button>
-                                <MenuList key={courseIndex}>
-                                {
-                                choices[course].map( (choice, choiceIndex) => {
-                                return (
+                                    <MenuContent fontFamily='Poppins'  key={courseIndex}>
 
+                                    {choices[course].map( (choice, choiceIndex) => {
+                                        return (
+                                            <MenuItem
+                                                key={choiceIndex}
+                                                fontWeight='normal'
+                                                fontSize={['.7rem', '.8rem']}
+                                                onClick={()=> setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], [`${course}_choice`]: choice}, ...guestArray.slice(guestIndex +1)])}
+                                            >
+                                                {choice}
+                                            </MenuItem>
+                                        )
+                                    })}
 
-                                        <MenuItem
-                                        key={choiceIndex}
-                                        fontWeight='normal'
-                                        fontSize={['.7rem', '.8rem']}
-                                        onClick={()=> setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], [`${course}_choice`]: choice}, ...guestArray.slice(guestIndex +1)])}
-                                        >
-                                        {choice}
-                                        </MenuItem>
-                                    
-
-                                )
-                                })
-                                }
-                                </MenuList>
-                                </Menu>
-                                
+                                    </MenuContent>
+                                </MenuRoot>                                    
                             )
                             })
                         }
@@ -393,44 +409,47 @@ export default function Tickets (props) {
             </Box>
         </FadeInBoxLeft>
 
+
+
         <FadeInBoxRight>
-            <Heading2>3) please go to the JustGiving site to make payment</Heading2>
+            <Heading>3) please go to the JustGiving site to make payment</Heading>
             <Box p='2' m='2'>
             <Text>
                 Tickets are £{`${TICKET_PRICE}`} per person.<br/>Click the logo below, and the payment page will open in a new window.<br/>Total payment required for {bookingForm.number_of_tickets} guest{(bookingForm.number_of_tickets > 1) ? 's'  : ''} is £{TICKET_PRICE * bookingForm.number_of_tickets}
             </Text>
 
-            <a href='https://www.justgiving.com/crowdfunding/Livelovesparklecharitydinner' target='_blank' rel="noreferrer">
+            <a href='https://www.justgiving.com/crowdfunding/livelovesparkle' target='_blank' rel="noreferrer">
                 <Image p='5' w='160px' src={fullJustGiving} alt='JustGiving' filter={'grayscale(80%)'} _hover={{filter: 'none'}}/>
             </a>
             </Box>
         </FadeInBoxRight>
 
+
+
         <FadeInBoxLeft>
-            <Heading2>4) confirm payment and submit</Heading2>
+            <Heading>4) confirm payment and submit</Heading>
             <Box p='4' m='2' maxW={'400px'}>
-            <VStack>
+            <Stack>
                 <Checkbox pt='4' size='md' colour='pink.500' colorScheme='pink'
-                isChecked={bookingForm.paid}
-                onChange={(e) => setBookingForm({...bookingForm, paid: !bookingForm.paid})}
-                >
-                I confirm JustGiving payment has been made
+                    isChecked={bookingForm.paid}
+                    onChange={(e) => setBookingForm({...bookingForm, paid: !bookingForm.paid})}
+                    >
+                    I confirm JustGiving payment has been made
                 </Checkbox>
 
                 <Button
-                isDisabled={!bookingForm.paid}
-                onClick={handleSubmit}
-                mt='4'
-                colorScheme='pink'
-                type='submit'
+                    isDisabled={!bookingForm.paid}
+                    onClick={handleSubmit}
+                    mt='4'
+                    colorScheme='pink'
+                    type='submit'
                 >
-                Submit
+                    Submit
                 </Button>
-            </VStack>
+            </Stack>
             </Box>
         </FadeInBoxLeft>
-        </Box>
-        </>
-    )
-};
+    </Box>
+)
+ */
 

@@ -27,7 +27,8 @@ const menuItems = [
     { label: "home", link: '/home' },
     { label: "my story", link: '/story' },
     { label: "tickets", link: '/tickets' },
-    { label: "event details", link: '/details' },
+    { label: "menu", link: '/menu'},
+    { label: "faqs", link: '/faqs'},
     { label: "sponsors", link: '/sponsors' },
     { label: "reports", link: '/reports' },
   ]
@@ -86,28 +87,27 @@ export const MenuWithSubnavigation = (
 
 const MenuVersion = () => {
 
+    const navigate = useNavigate()
+
     return (
 
         <Box display={{base:'block',md:'none' }}>
         <MenuRoot>
         <MenuTrigger asChild>
-            <Button variant="outline" size="sm">
-            Open
-            </Button>
+            <Box mr='8' _hover={{color:'pink.600'}}><FaBars/></Box>
         </MenuTrigger>
-        <MenuContent>
-            <MenuItem value="new-txt">New Text File</MenuItem>
-            <MenuItem value="new-file">New File...</MenuItem>
-            <MenuRoot positioning={{ placement: "right-start", gutter: 2 }}>
-            <MenuTriggerItem value="open-recent">Open Recent</MenuTriggerItem>
-            <MenuContent>
-                <MenuItem value="panda">Panda</MenuItem>
-                <MenuItem value="ark">Ark UI</MenuItem>
-                <MenuItem value="chakra">Chakra v3</MenuItem>
-            </MenuContent>
-            </MenuRoot>
-            <MenuItem value="open-file">Open File...</MenuItem>
-            <MenuItem value="export">Export</MenuItem>
+        <MenuContent fontFamily='Poppins'>
+            {menuItems.map((item) => (
+                <MenuItem
+                    key={item.label}
+                    _hover={{
+                        color: 'pink.600'
+                    }}
+                    onClick={()=>{navigate(item.link)}}
+                    >
+                    {item.label}
+                </MenuItem>
+            ))}
         </MenuContent>
         </MenuRoot>
         </Box>
