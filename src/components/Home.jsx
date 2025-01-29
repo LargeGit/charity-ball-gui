@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 //import { FaBeer, FaAngry } from 'react-icons/fa';
 //import { IoMdClose, IoMdMenu } from 'react-icons/io';
 
-import portraitBackground from '../img/portraitBackground.jpg';
+//import portraitBackground from '../img/portraitBackground.jpg';
+//import plainBackground from '../img/PlainBackground.png';
 
 import { SlideDownHeading, FadeInBoxLeft, FadeInBoxRight } from 'chakra-react-common/miscellaneous';
 
@@ -16,70 +17,70 @@ const responsiveSubtextFont = ['.8rem', '1rem', '1.2rem', '1.8rem']
 
 export const HomeOnBackground = (props) => {
 
-  return (
-    
-    <Box>
-
-        <Image display={{base:'none', sm: 'block'}} width='1000px' src={portraitBackground}/>
-
-        <Box position={{base:'static',sm:'absolute'}} top='120px' left='8px'>
-        <SlideDownHeading
-          textAlign='center'
-          fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveHeaderFont}
-          fontWeight='medium'
-          textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'
+    return (
+        
+        <Box
+            backgroundImage='url("PlainBackground.png")'
+            backgroundRepeat='no-repeat'
+            backgroundSize='cover'
         >
-          Live Love & Sparkle
-        </SlideDownHeading>
-        <FadeInBoxRight
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' p='4' fontSize={responsiveBodyFont}
-        >Charity Dinner</FadeInBoxRight>
-        <FadeInBoxLeft
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='1' fontSize={responsiveBodyFont}
-        >Featuring Live Music: TBD</FadeInBoxLeft>
-        <FadeInBoxRight
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='1' fontSize={responsiveBodyFont}
-        >Winkworth Farm, Lea SN16 9NH</FadeInBoxRight>
-        <FadeInBoxLeft
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='1' fontSize={responsiveBodyFont}
-        >Saturday 4th October 2025</FadeInBoxLeft>
-        <FadeInBoxRight
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='2' fontSize={responsiveBodyFont}
-        >Tickets £75 per person</FadeInBoxRight>
-        <FadeInBoxLeft
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='1' fontSize={responsiveSubtextFont}
-        >Includes Pink sparkling reception, 3 course meal and Live Band</FadeInBoxLeft>        
-        <FadeInBoxRight
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt='1' fontSize={responsiveSubtextFont}
-        >Dress Code: Black Tie with a touch of sparkle</FadeInBoxRight>   
 
-        <Link to='/tickets'>
-        <FadeInBoxRight
-          fontFamily='Libre Baskerville'
-          textAlign='center'
-          color='pink.700' px='8' pt={['2', '2', '4', '16']} fontSize={responsiveSubtextFont}
-        >
-          Click here for tickets
-        </FadeInBoxRight>  
-        </Link> 
+            <SlideDownHeading
+            textAlign='center'
+            fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveHeaderFont}
+            fontWeight='medium'
+            textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'
+            >
+            Live Love & Sparkle
+            </SlideDownHeading>
+            <FadeInBoxRight
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' p='4' fontSize={responsiveBodyFont}
+            >Charity Dinner</FadeInBoxRight>
+            <FadeInBoxLeft
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
+            >Featuring Live Music: TBD</FadeInBoxLeft>
+            <FadeInBoxRight
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
+            >Winkworth Farm, Lea SN16 9NH</FadeInBoxRight>
+            <FadeInBoxLeft
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='1' fontSize={responsiveBodyFont}
+            >Saturday 4th October 2025</FadeInBoxLeft>
+            <FadeInBoxRight
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='2' fontSize={responsiveSubtextFont}
+            >Tickets £75 per person</FadeInBoxRight>
+            <FadeInBoxLeft
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
+            >Includes Pink sparkling reception, 3 course meal and Live Band</FadeInBoxLeft>        
+            <FadeInBoxRight
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
+            >Dress Code: Black Tie with a touch of sparkle</FadeInBoxRight>   
+
+            <Link to='/tickets'>
+            <FadeInBoxRight
+            fontFamily='Libre Baskerville'
+            textAlign='center'
+            color='pink.700' px='4' pt={['2', '2', '4', '8']} pb='10' fontSize={responsiveSubtextFont}
+            >
+            Click here for tickets
+            </FadeInBoxRight>  
+            </Link> 
         </Box>
-    </Box>
 
-  )
+    )
 };
 
 
@@ -87,8 +88,8 @@ export function Menu (props) {
 
     return (
         
-        <Box w='100vw' h='100%'
-            backgroundImage={plainBackground}
+        <Box
+            backgroundImage='url("PlainBackground.png")'
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
         >
