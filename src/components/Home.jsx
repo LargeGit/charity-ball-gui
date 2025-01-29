@@ -90,7 +90,7 @@ export function Menu (props) {
     return (
         
         <Box
-        m='4'
+            m='4'
             backgroundImage='url("PlainBackground.png")'
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
