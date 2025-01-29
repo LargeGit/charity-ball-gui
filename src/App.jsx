@@ -13,7 +13,6 @@ import { mySystem } from './theme/theme.js'
 import { Notify } from "chakra-react-common/notification";
 import { POST, BASE_URL } from "js-common/constants";
 import { FadeInBoxLeft, FadeInBoxRight } from 'chakra-react-common/miscellaneous';
-import { SignIn } from 'chakra-react-common/sign-in';
 
 //import NavBar from './components/NavBar.jsx';
 import Band from './components/Band.jsx';
@@ -28,7 +27,7 @@ import Schedule from './components/Schedule.jsx';
 import { Report } from './components/Report.jsx';
 import {HomeOnBackground} from './components/Home.jsx';
 import { Menu } from './components/Home.jsx';
-import { MenuWithSubnavigation } from './components/NavBar2.jsx';
+import { MenuWithSubnavigation } from './components/NavBar.jsx';
 import { TbDeviceDesktopSearch } from 'react-icons/tb';
 
 
@@ -68,14 +67,13 @@ function App() {
                 <Route path='menu' element={<Menu />} />
                 <Route path='test' element={<HomeOnBackground />} />
                 <Route path='story' element={<MyStory/>} />
-                <Route path='sponsors' element={<Sponsors/>} />
+                <Route path='sponsor' element={<Sponsors/>} />
                 <Route path='raffle' element={<Raffle/>} />
-                <Route path='tickets' element={<Tickets setNotification={setNotification}/>} />
-                <Route path='faqs' element={<Faqs/>} />
+                <Route path='ticket' element={<Tickets setNotification={setNotification}/>} />
+                <Route path='faq' element={<Faqs/>} />
                 <Route path='band' element={<Band/>} />
                 <Route path='schedule' element={<Schedule/>} />
-                <Route path='logon' element={<SignIn />} />
-                <Route path='report' element={<Report />} />
+                <Route path='report' element={<Report keyProps={keyProps} setKeyProps={setKeyProps} setNotification={setNotification}/>} />
                 <Route path='*' element={<PageNotFound/>} />
                 </Route>
             </Routes>

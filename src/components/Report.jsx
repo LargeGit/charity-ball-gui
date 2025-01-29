@@ -8,24 +8,26 @@ import { Fieldset, Box, Button, Heading} from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 
 import { CommonTable } from 'chakra-react-common/common-table';
+import { SignIn } from './SignIn.jsx'
 
 //import { FaBeer, FaAngry } from 'react-icons/fa';
 //import { IoMdClose, IoMdMenu } from 'react-icons/io';
 
-
-//import { restRequest } from 'js-common/utils'
-import { GET, BASE_URL } from "js-common/constants";
-
+import { GET, BASE_URL, ADMIN_ROLE } from "js-common/constants";
+import { restRequest } from 'js-common/utils'
 
 
-export const Report = ( props ) => {
 
-    const [passkey, setPasskey] = useState('')
-    const [isPasskeyError, setIsPasskeyError] = useState(false)
+export const Report = ({
+    
+    keyProps,
+    setKeyProps,
+    setNotification,
+
+}) => {
 
     const [data, setData] = useState([])
 
-    const [state, setNotification] = useToastHook();
     //const navigate = useNavigate()
 
     const handlePasskeyInputChange = (e) => {
@@ -34,59 +36,10 @@ export const Report = ( props ) => {
     ;}
 
     useEffect(() => {
-        const ssPasskey = JSON.parse(window.sessionStorage.getItem('passkey'));
-        if (ssPasskey != null) {
-        handleSubmit();
-        }
+        restRequest(GET, `${BASE_URL}charity-ball/`, (r)=>setData(r), ()=>setData([]), null, null)
     },
-    []
+        []
     );
-
-
-  const handleSubmit = () => {
-
-    const ssPasskey = JSON.parse(window.sessionStorage.getItem('passkey'));
-    
-    if (!ssPasskey && passkey === '') {
-        setIsPasskeyError(true)
-        return
-    }
-
-    const fetchData = {
-        method: GET,
-        headers: new Headers({
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json'
-
-        })
-    }
-
-    var wasSuccessful = true;
-
-    fetch(`${BASE_URL}booking/?passkey=${ssPasskey ? ssPasskey : passkey}`, fetchData)
-      
-        .then( response=>{
-            wasSuccessful = response.ok;
-            return ( response.json() )
-        })
-
-        .then( data=>{
-            if (wasSuccessful) {
-            if (!ssPasskey) {
-                window.sessionStorage.setItem('passkey', JSON.stringify(passkey));
-            }
-            setPasskey('')
-            setData(data)
-            } else {
-            setNotification({ text: `${data.detail}`, level: "error" });
-            }
-        })
-        
-        .catch((error) => {
-            setNotification({ text: `Oops, something went wrong! ${error}`, level: "error" });
-        })
-
-  };
 
     const structure = {
         created: ['created', '/user', 'user_id'],
@@ -97,13 +50,14 @@ export const Report = ( props ) => {
         dietary_requirements: ['diet', '/user', 'user_id'],
         comment: ['comment', '/user', 'user_id'],
   };
+
   const name = 'bookingReport';
 
 
     const TableView = () => {
         return (
         <>
-        <Heading p='4' color='pink.600' size='md'>Access Booking Reports</Heading>
+        <Heading p='4' color='pink.600' size='md'>Booking Reports</Heading>
         <CommonTable
             data={data}
             structure={structure}
@@ -115,37 +69,11 @@ export const Report = ( props ) => {
 
     return (
         <>
-        {
-        (JSON.parse(window.sessionStorage.getItem('passkey'))) ?
-        <TableView />
+        { keyProps.role === ADMIN_ROLE ?
+        <TableView/>
         :
-        <>
-        <Box p='6' m='4' pl={[2,8]} >
-        <Heading pb={'60px'} color='pink.600' size='md'>Access Booking Reports</Heading>
-        <Fieldset isInvalid={isPasskeyError} {...props}>
-            <Box>Passkey</Box>
-            <Input id='passkey' type='password' value={passkey} onChange={handlePasskeyInputChange} />
-            {!isPasskeyError ? (
-            <Box>
-                Enter your passkey to access the report
-            </Box>
-            ) : (
-            <Box>cannot be blank.</Box>
-            )}
-        <Button
-            mt='4'
-            colorScheme='pink'
-            isLoading={props.isSubmitting}
-            type='submit'
-            onClick={handleSubmit}
-        >
-            Submit
-        </Button>
-        </Fieldset>
-        </Box>
-        </>
+        <SignIn keyProps={keyProps} setKeyProps={setKeyProps} setNotification={setNotification} />
         } 
-
         </>
     ) 
 };

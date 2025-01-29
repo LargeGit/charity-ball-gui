@@ -213,10 +213,11 @@ export const Tickets = ({
                         return (
                             <Fieldset.Content  key={guestIndex}>
                                 <Separator  mt='10' variant='solid' colorPalette='pink' size='md'/>
-                                <Field label={`guest ${guestIndex+1} name:`}>
+                                <Flex>
+                                    <Box textAlign='right' pr='4' pt='2' fontWeight='medum' width='10rem'>{`guest ${guestIndex+1} name`}</Box>
                                     <Input name={`name-${guestIndex}`} type='text' value={guestArray[guestIndex].guest_name} 
                                         onChange={ (e) => { setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], guest_name: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
-                                </Field>
+                                </Flex>
 
                                 <Flex pr='4' justify='space-between' gap='4'>
                                     <Field><MenuMenu course='starter' guestIndex={guestIndex}/></Field>
@@ -224,10 +225,11 @@ export const Tickets = ({
                                     <Field><MenuMenu course='dessert' guestIndex={guestIndex}/></Field>
                                 </Flex>
 
-                                <Field label='dietery requirements:'>
+                                <Flex>
+                                    <Box textAlign='right' pr='4' fontWeight='medum' width='10rem'>dietary requirements</Box>
                                     <Input key='dietary' name={`dietary-${guestIndex}`} type='text' value={guestArray[guestIndex].dietary_requirement} 
                                         onChange={ (e) => { setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], dietary_requirment: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
-                                </Field>
+                                </Flex>
 
                             </Fieldset.Content>
                         )

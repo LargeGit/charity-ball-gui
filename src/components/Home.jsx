@@ -20,6 +20,7 @@ export const HomeOnBackground = (props) => {
     return (
         
         <Box
+        m='4'
             backgroundImage='url("PlainBackground.png")'
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
@@ -89,13 +90,14 @@ export function Menu (props) {
     return (
         
         <Box
+        m='4'
             backgroundImage='url("PlainBackground.png")'
             backgroundRepeat='no-repeat'
             backgroundSize='cover'
         >
 
             <SlideDownHeading
-                align='center'
+                textAlign='center'
                 letterSpacing={'4px'}
                 fontFamily='Oooh Baby' color='#FFF5EE' pt={12} px={12} fontSize={{base: '3.0rem', sm: '3.8rem', md: '5.8rem'}}
                 textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'
@@ -103,7 +105,7 @@ export function Menu (props) {
             Menu
             </SlideDownHeading>
             <FadeInBoxRight
-                align='center'
+                textAlign='center'
                 color='pink.700' p='4' fontSize={['1.4rem', '2.0rem', '2.0rem']}
                 fontFamily='Oooh Baby'
                 fontWeight='bold'
@@ -111,7 +113,7 @@ export function Menu (props) {
             Starters
             </FadeInBoxRight>
             <FadeInBoxLeft
-            align='center'
+            textAlign='center'
             px='8' pt='1' fontSize={['1.0rem', '1.2rem', '1.4rem']}
             >
             Gin and tonic cured salmon, pickled cucumber, lemon aioli<br/>
@@ -120,7 +122,7 @@ export function Menu (props) {
             </FadeInBoxLeft>
 
             <FadeInBoxRight
-            align='center'
+            textAlign='center'
             color='pink.700' p='4' fontSize={['1.4rem', '2.0rem', '2.0rem']}
             fontFamily='Oooh Baby'
             fontWeight='bold'
@@ -128,7 +130,7 @@ export function Menu (props) {
             Mains
             </FadeInBoxRight>
             <FadeInBoxLeft
-            align='center'
+            textAlign='center'
             px='8' pt='1' fontSize={['1.0rem', '1.2rem', '1.4rem']}
             >
             Slow cooked shin of beef, roasted baby onions, smoked bacon, beef reduction<br/>
@@ -137,7 +139,7 @@ export function Menu (props) {
             </FadeInBoxLeft>
 
             <FadeInBoxRight
-            align='center'
+            textAlign='center'
             color='pink.700' p='4' fontSize={['1.4rem', '2.0rem', '2.0rem']}
             fontFamily='Oooh Baby'
             fontWeight='bold'
@@ -145,8 +147,8 @@ export function Menu (props) {
             Desserts
             </FadeInBoxRight>
             <FadeInBoxLeft
-            align='center'
-            px='8' pt='1' fontSize={['1.0rem', '1.2rem', '1.4rem']}
+            textAlign='center'
+            px='8' pt='1' pb='8' fontSize={['1.0rem', '1.2rem', '1.4rem']}
             >
             Triple chocolate brownie <br/>
             Lemon posset and lavender shortbread  <br/>
