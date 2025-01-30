@@ -22,14 +22,57 @@ import MyStory from './components/MyStory.jsx';
 import Raffle from './components/Raffle.jsx';
 import Sponsors from './components/Sponsors.jsx';
 import { Tickets } from './components/Tickets.jsx';
-import Schedule from './components/Schedule.jsx';
-
 import { Report } from './components/Report.jsx';
-import {HomeOnBackground} from './components/Home.jsx';
-import { Menu } from './components/Home.jsx';
+import { Template } from './components/Template.jsx';
 import { MenuWithSubnavigation } from './components/NavBar.jsx';
 import { TbDeviceDesktopSearch } from 'react-icons/tb';
 
+
+const homePage = [
+    {type: 'title', body: 'Live Love & Sparkle'},
+    {type: 'text', body: 'Charity Dinner'},
+    {type: 'subtext', body: 'Featuring Live Music: TBD'},
+    {type: 'subtext', body: 'Winkworth Farm, Lea SN16 9NH'},
+    {type: 'text', body: 'Saturday 4th October 2025'},
+    {type: 'subtext', body: 'Tickets £75 per person'},
+    {type: 'subtext', body: 'Includes Pink sparkling reception, 3 course meal and Live Band'},
+    {type: 'subtext', body: 'Dress Code: Black Tie with a touch of sparkle'},
+    {type: 'subtext', body: 'Click here for tickets', link: '/ticket'},
+]
+
+const menu = [
+    {type: 'title', body: 'Menu'},
+    {type: 'heading', body: 'Starters'},
+    {type: 'subtext', body: <>Gin and tonic cured salmon, pickled cucumber, lemon aioli<br/>
+        or<br/>
+        Cherry tomato tart tatin on baby leaf, herb and toasted seed salad</>},
+    {type: 'heading', body: 'Mains'},
+    {type: 'subtext', body: <>Slow cooked shin of beef, roasted baby onions, smoked bacon, beef reduction<br/>
+        or<br/>
+        Roasted red pepper filled with wild rice, ratatouille topped with brie and a puff pastry lid</>},
+    {type: 'heading', body: 'Desserts'},
+    {type: 'subtext', body: <>Triple chocolate brownie <br/>
+        Lemon posset and lavender shortbread  <br/>
+        Eton Mess pots</>},
+
+]
+const schedule = [
+    {type: 'title', body: 'Schedule'},
+    {type: 'heading', body: '6:30pm'},
+    {type: 'subtext', body: 'Drinks Reception'},
+    {type: 'heading', body: '7:30pm'},
+    {type: 'subtext', body: 'Dinner'},
+    {type: 'heading', body: '9:00pm'},
+    {type: 'subtext', body: 'Raffle and Speech'},
+    {type: 'heading', body: '9:30pm'},
+    {type: 'subtext', body: 'Dancing'},
+    {type: 'heading', body: 'midnight'},
+    {type: 'subtext', body: 'Close'},
+
+
+]
+
+           
 
 function App() {
 
@@ -62,17 +105,20 @@ function App() {
         <ChakraProvider  value={mySystem} >
             <Routes>
                 <Route path="/" element={ <Layout keyProps={keyProps} notification={notification} setNotification={setNotification}/> } >
-                <Route path='' element={<HomeOnBackground />} />
-                <Route path='home' element={<HomeOnBackground />} />
-                <Route path='menu' element={<Menu />} />
-                <Route path='test' element={<HomeOnBackground />} />
+                <Route path='' element={<Template content={homePage} />} />
+                <Route path='home' element={<Template content={homePage} />} />
+
                 <Route path='story' element={<MyStory/>} />
-                <Route path='sponsor' element={<Sponsors/>} />
+
                 <Route path='raffle' element={<Raffle/>} />
                 <Route path='ticket' element={<Tickets setNotification={setNotification}/>} />
-                <Route path='faq' element={<Faqs/>} />
+
+                <Route path='menu' element={<Template content={menu} />} />
                 <Route path='band' element={<Band/>} />
-                <Route path='schedule' element={<Schedule/>} />
+                <Route path='timing' element={<Template content={schedule}/>} />
+                <Route path='faq' element={<Faqs/>} />
+
+                <Route path='sponsor' element={<Sponsors/>} />
                 <Route path='report' element={<Report keyProps={keyProps} setKeyProps={setKeyProps} setNotification={setNotification}/>} />
                 <Route path='*' element={<PageNotFound/>} />
                 </Route>

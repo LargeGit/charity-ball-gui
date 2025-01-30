@@ -9,7 +9,7 @@ import {Collapsible, Icon, useBreakpointValue, useDisclosure } from '@chakra-ui/
 
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger, MenuItemGroup, MenuSeparator, MenuTriggerItem } from './ui/menu';
 
-import { PopoverBody, PopoverContent, PopoverRoot, PopoverTitle, PopoverTrigger } from './ui/popover'
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from './ui/popover';
 
 //import { Menu, MenuButton, MenuList, MenuItem, MenuDivider, MenuGroup } from '@chakra-ui/react'
 
@@ -18,20 +18,20 @@ import { BsPersonLinesFill } from 'react-icons/bs';
 import { isTouchScreen } from 'js-common/constants'
 
 
-
-function SignedIn() {
-    return <Icon as={BsPersonLinesFill} />
-};
-
 const menuItems = [
-    { label: "home", link: '/home' },
-    { label: "my story", link: '/story' },
-    { label: "tickets", link: '/ticket' },
-    { label: "menu", link: '/menu'},
-    { label: "faqs", link: '/faq'},
-    { label: "sponsors", link: '/sponsor' },
-    { label: "report", link: '/report' },
+    {label: "home", link: '/home'},
+    {label: "my story", link: '/story'},
+    {label: "tickets", link: '/ticket'},
+    {label: "details", children: [
+        {label: "menu", link: '/menu'},
+        {label: "band", link: '/band'},
+        {label: "timing", link: '/timing'},
+        {label: "faqs", link: '/faq'},
+    ]},
+    {label: "sponsors", link: '/sponsor'},
+    {label: "report", link: '/report'},
 ]
+
 
 export const MenuWithSubnavigation = (
 
@@ -39,9 +39,6 @@ export const MenuWithSubnavigation = (
     setNotification
 
 ) => {
-
-    const navigate = useNavigate()
-    const [ topLevelIsOpen, setTopLevelIsOpen ] = useState(false);
 
     return (
         <Flex
@@ -52,38 +49,103 @@ export const MenuWithSubnavigation = (
             borderBottomWidth='1px' borderBottomColor={'gray.200'}
             align='center'
             >
-            <Box
-                textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-                ml='4'
-                color={isTouchScreen ? 'pink.600' : 'pink.400'}
-                onClick={()=>{setTopLevelIsOpen(false); navigate('/home')}}
-                fontFamily='Oooh Baby'
-                fontSize='1.4rem'
-                fontWeight='bold'
-                _hover={{
-                    color: 'pink.600',
-                }}
-            >
-                Live Love & Sparkle
-            </Box>
-            <Flex display={{base:'none',md:'flex' }} wrap='none' gap='4' mr='4'>
-                {menuItems.map((item) => (
-                    <Box
-                        key={item.label}
-                        _hover={{
-                            color: 'pink.600'
-                        }}
-                        onClick={()=>{navigate(item.link)}}
-                        >
-                        {item.label}
-                    </Box>
-                ))}
-            </Flex>
+            <Logo/>
+            <ExpandedVersion/>
             <MenuVersion/>
         </Flex>
     )
 }
 
+const Logo = () => {
+
+
+    return (
+        <Link
+            as={ReactLink}
+            ml='4'
+            color={isTouchScreen ? 'pink.600' : 'pink.400'}
+            to={'/home'}
+            fontFamily='Oooh Baby'
+            fontSize='1.4rem'
+            fontWeight='bold'
+            _hover={{
+                color: 'pink.600',
+                bg: 'pink.50'
+            }}
+        >
+            Live Love & Sparkle
+    </Link>
+    )
+}
+
+
+const ExpandedVersion = () => {
+
+    const [open, setOpen] = useState(false)
+
+    return (
+        <Flex display={{base:'none', md:'flex' }} wrap='none' gap='4' mr='4'>
+            {menuItems.map( (item) => (
+                <Box key={item.label}>
+                    <PopoverRoot positioning={{placement: 'bottom-end', offset:{mainAxis:12, crossAxis: 12}}}>
+                        <PopoverTrigger asChild>
+                            <Box
+                                textDecoration='none'
+                                as={ReactLink}
+                                to={item.link ?? '#'}
+                                _hover={{
+                                    color: 'pink.600',
+                                }}
+                                >
+                                {item.label}
+                            </Box>
+                        </PopoverTrigger>
+                        <PopoverContent width='8rem'>
+                        {item.children && (    
+                            <Stack spaceY='2' py='4'>
+                                {item.children.map( (child) => (
+                                    <Box
+                                        key={child.label}
+                                        px='2'
+                                        fontFamily='Poppins'
+                                        textDecoration='none'
+                                        as={ReactLink}
+                                        to={child.link ?? '#'}
+                                        _hover={{
+                                            color: 'pink.600',
+                                        }}
+                                        >
+                                    {child.label}
+                                </Box>
+                                ))}
+                            </Stack>
+
+                        )}
+                        </PopoverContent>
+                    </PopoverRoot>
+                </Box>
+            ))}
+        </Flex>
+    )
+}
+
+
+const singleMenuItem = (item) => {
+
+    return (
+        <Box
+            textDecoration='none'
+            as={ReactLink}
+            to={item.link ?? '#'}
+            _hover={{
+                color: 'pink.600',
+                bg: 'pink.50'
+            }}
+            >
+            {item.label}
+        </Box>
+    )
+}
 
 const MenuVersion = () => {
 

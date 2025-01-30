@@ -15,74 +15,93 @@ const responsiveHeaderFont = ['2.5rem', '3rem', '3.5rem', '4rem']
 const responsiveBodyFont = ['1rem', '1.25rem', '1.5rem', '2.5rem']
 const responsiveSubtextFont = ['.8rem', '1rem', '1.2rem', '1.8rem']
 
-export const HomeOnBackground = (props) => {
+
+export const Template = ({content}) =>{
 
     return (
-        
         <Box
-        m='4'
-            backgroundImage='url("PlainBackground.png")'
-            backgroundRepeat='no-repeat'
-            backgroundSize='cover'
-        >
-
-            <SlideDownHeading
-            textAlign='center'
-            fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveHeaderFont}
-            fontWeight='medium'
-            textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'
-            >
-            Live Love & Sparkle
-            </SlideDownHeading>
-            <FadeInBoxRight
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' p='4' fontSize={responsiveBodyFont}
-            >Charity Dinner</FadeInBoxRight>
-            <FadeInBoxLeft
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
-            >Featuring Live Music: TBD</FadeInBoxLeft>
-            <FadeInBoxRight
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
-            >Winkworth Farm, Lea SN16 9NH</FadeInBoxRight>
-            <FadeInBoxLeft
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='1' fontSize={responsiveBodyFont}
-            >Saturday 4th October 2025</FadeInBoxLeft>
-            <FadeInBoxRight
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='2' fontSize={responsiveSubtextFont}
-            >Tickets £75 per person</FadeInBoxRight>
-            <FadeInBoxLeft
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
-            >Includes Pink sparkling reception, 3 course meal and Live Band</FadeInBoxLeft>        
-            <FadeInBoxRight
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
-            >Dress Code: Black Tie with a touch of sparkle</FadeInBoxRight>   
-
-            <Link to='/tickets'>
-            <FadeInBoxRight
-            fontFamily='Libre Baskerville'
-            textAlign='center'
-            color='pink.700' px='4' pt={['2', '2', '4', '8']} pb='10' fontSize={responsiveSubtextFont}
-            >
-            Click here for tickets
-            </FadeInBoxRight>  
-            </Link> 
+            m='10'
+            _last={{pb:'10'}}
+            backgroundImage='url("PlainBackground.png")' backgroundRepeat='no-repeat' backgroundSize='cover'
+            shadow='0 4px 8px 0 rgba(0, 0 ,0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'>
+            {content.map( (item, index) => (
+                <Content key={index} item={item}/>
+            ))}
         </Box>
-
     )
-};
+}
+
+
+const Content = ({item}) => {
+
+    return (
+        <>
+        <Box
+            textDecoration='none'
+            as={Link}
+            to={item.link ?? '#'}
+        >
+            {item.type === 'title' && (
+                <SlideDownHeading
+                    textAlign='center'
+                    fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveHeaderFont}
+                    fontWeight='medium'
+                    textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'>
+                    {item.body}
+                </SlideDownHeading>
+            )}
+        </Box>
+        <Box
+            textDecoration='none'
+            as={Link}
+            to={item.link ?? '#'}
+        >
+            {item.type === 'text' && (
+                <FadeInBoxRight
+                    fontFamily='Libre Baskerville'
+                    textAlign='center'
+                    color='pink.700' p='4' fontSize={responsiveBodyFont}
+                    >
+                    {item.body}
+                </FadeInBoxRight>
+            )}
+        </Box>
+        <Box
+            textDecoration='none'
+            as={Link}
+            to={item.link ?? '#'}
+        >
+            {item.type === 'subtext' && (
+                <FadeInBoxLeft
+                    fontFamily='Libre Baskerville'
+                    textAlign='center'
+                    color='pink.700' px='4' pt='1' fontSize={responsiveSubtextFont}
+                >
+                    {item.body}
+                </FadeInBoxLeft>
+            )}
+        </Box>
+        <Box
+            textDecoration='none'
+            as={Link}
+            to={item.link ?? '#'}
+        >
+            {item.type === 'heading' && (
+                <FadeInBoxRight
+                textAlign='center'
+                color='pink.700' p='4' fontSize={['1.4rem', '2.0rem', '2.0rem']}
+                fontFamily='Oooh Baby'
+                fontWeight='bold'
+                >
+                {item.body}
+            </FadeInBoxRight>
+            )}
+        </Box>
+        </>
+    )
+}
+
+
 
 
 export function Menu (props) {

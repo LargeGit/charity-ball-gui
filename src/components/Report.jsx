@@ -7,7 +7,7 @@ import { Fieldset, Box, Button, Heading} from "@chakra-ui/react";
 
 import { Input } from "@chakra-ui/react";
 
-import { CommonTable } from 'chakra-react-common/common-table';
+import { CommonReturn } from 'chakra-react-common/reports';
 import { SignIn } from './SignIn.jsx'
 
 //import { FaBeer, FaAngry } from 'react-icons/fa';
@@ -49,28 +49,19 @@ export const Report = ({
         guest_name: ['guest name', '/user', 'user_id'],
         dietary_requirements: ['diet', '/user', 'user_id'],
         comment: ['comment', '/user', 'user_id'],
-  };
-
-  const name = 'bookingReport';
-
-
-    const TableView = () => {
-        return (
-        <>
-        <Heading p='4' color='pink.600' size='md'>Booking Reports</Heading>
-        <CommonTable
-            data={data}
-            structure={structure}
-            name={name}
-        />
-        </>
-        )
     };
 
     return (
         <>
         { keyProps.role === ADMIN_ROLE ?
-        <TableView/>
+        <CommonReturn
+            keyProps={keyProps}
+            data={data}
+            structure={structure}
+            title='admin booking report'
+            name='booking'
+            addPath={null}
+        />
         :
         <SignIn keyProps={keyProps} setKeyProps={setKeyProps} setNotification={setNotification} />
         } 
