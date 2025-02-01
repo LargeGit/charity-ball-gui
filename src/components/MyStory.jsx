@@ -13,7 +13,7 @@ function Heart() {
 export default function MyStory (props) {
 
     return (
-        <Box py='6' m='4' px={[2,8]} width={useBreakpointValue({ base: "92vw", sm: '95vw', md: "90vw", lg: '850px' })}>
+        <Box py='6' m='2' px={['0','2', '4', '8']} width={useBreakpointValue({ base: "100%", sm: '95%', md: "90%", lg: '850px' })}>
 
         <SlideDownHeading>My Story</SlideDownHeading>
         <FadeInBoxLeft>

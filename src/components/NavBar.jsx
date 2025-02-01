@@ -60,7 +60,8 @@ const Logo = () => {
 
 
     return (
-        <Link
+        <Box
+            textDecoration='none'
             as={ReactLink}
             ml='4'
             color={isTouchScreen ? 'pink.600' : 'pink.400'}
@@ -70,11 +71,10 @@ const Logo = () => {
             fontWeight='bold'
             _hover={{
                 color: 'pink.600',
-                bg: 'pink.50'
             }}
         >
             Live Love & Sparkle
-    </Link>
+    </Box>
     )
 }
 
@@ -87,12 +87,13 @@ const ExpandedVersion = () => {
         <Flex display={{base:'none', md:'flex' }} wrap='none' gap='4' mr='4'>
             {menuItems.map( (item) => (
                 <Box key={item.label}>
-                    <PopoverRoot positioning={{placement: 'bottom-end', offset:{mainAxis:12, crossAxis: 12}}}>
+                    <PopoverRoot open={open} positioning={{placement: 'bottom-end', offset:{mainAxis:12, crossAxis: 12}}}>
                         <PopoverTrigger asChild>
                             <Box
                                 textDecoration='none'
                                 as={ReactLink}
                                 to={item.link ?? '#'}
+                                onClick={()=>{item.children ? setOpen(true) : setOpen(false)}}
                                 _hover={{
                                     color: 'pink.600',
                                 }}
@@ -100,7 +101,7 @@ const ExpandedVersion = () => {
                                 {item.label}
                             </Box>
                         </PopoverTrigger>
-                        <PopoverContent width='8rem'>
+                        <PopoverContent width='8rem' onMouseLeave={()=>setOpen(false)}>
                         {item.children && (    
                             <Stack spaceY='2' py='4'>
                                 {item.children.map( (child) => (
@@ -111,6 +112,7 @@ const ExpandedVersion = () => {
                                         textDecoration='none'
                                         as={ReactLink}
                                         to={child.link ?? '#'}
+                                        onClick={()=>{setOpen(false)}}
                                         _hover={{
                                             color: 'pink.600',
                                         }}
@@ -130,23 +132,6 @@ const ExpandedVersion = () => {
 }
 
 
-const singleMenuItem = (item) => {
-
-    return (
-        <Box
-            textDecoration='none'
-            as={ReactLink}
-            to={item.link ?? '#'}
-            _hover={{
-                color: 'pink.600',
-                bg: 'pink.50'
-            }}
-            >
-            {item.label}
-        </Box>
-    )
-}
-
 const MenuVersion = () => {
 
     const navigate = useNavigate()
@@ -160,15 +145,37 @@ const MenuVersion = () => {
         </MenuTrigger>
         <MenuContent fontFamily='Poppins'>
             {menuItems.map((item) => (
+                (item.children)
+                ?
+                <MenuRoot key={item.label}>
+                <MenuTriggerItem value={item.label}>{item.label}</MenuTriggerItem>
+                <MenuContent>
+                    {item.children.map( (child) => (
+                    <MenuItem
+                        key={child.label}
+                        px='2'
+                        fontFamily='Poppins'
+                        textDecoration='none'
+                        as={ReactLink}
+                        to={child.link ?? '#'}
+                        _hover={{ color: 'pink.600'}}
+                        >
+                        {child.label}
+                    </MenuItem>
+                    ))}
+                </MenuContent>                    
+                </MenuRoot>
+                :
                 <MenuItem
                     key={item.label}
                     _hover={{
                         color: 'pink.600'
                     }}
-                    onClick={()=>{navigate(item.link)}}
+                    onClick={()=>{navigate(item.link ?? '#')}}
                     >
                     {item.label}
                 </MenuItem>
+                
             ))}
         </MenuContent>
         </MenuRoot>

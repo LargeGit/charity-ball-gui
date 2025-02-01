@@ -43,7 +43,7 @@ export const SignIn = ({
     };
 
     const title = 'sign-in';
-    const subtitle = <><Box>Existing account holders</Box><Box pb='4'>enter your username and password below</Box></>
+    const subtitle = <Box>Enter your admin username and password below</Box>
     const getUrl = `${BASE_URL}user/logon/`;
     const putUrl = `${BASE_URL}user/logon/`;
     const doItMethod = POST;

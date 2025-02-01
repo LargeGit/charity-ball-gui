@@ -3,7 +3,7 @@ import { defineRecipe } from '@chakra-ui/react';
 
 const breakpoints = {
     base: "0px",  //0px
-    sm: "480px",  //320px
+    sm: "360px",  //320px
     md: "760px",  //768px
     lg: "940px",  //992px
     xl: "1200px", //1280px

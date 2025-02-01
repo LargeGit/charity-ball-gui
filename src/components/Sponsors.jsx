@@ -29,7 +29,7 @@ const myOpacity = (isTouchScreen) ? '1.0' : '0.5';
 export default function Sponsors (props) {
 
   return (
-    <Box py='6' m='4' px={[2,8]} width={useBreakpointValue({ base: "92vw", sm: '95vw', md: "90vw", lg: '850px' })}>
+    <Box py='6' m='4' px={[2,8]} maxWidth='1200px'>
       <SlideDownHeading pb={10} fontSize='2.5rem'>Event Sponsors</SlideDownHeading>
       <FadeInBoxRight>
         <Flex justifyContent='space-around' alignContent='center' w={'100%'} flexWrap='wrap'>

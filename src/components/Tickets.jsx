@@ -101,7 +101,13 @@ export const Tickets = ({
         host_address:  false,
     };
 
+    const defaultGuestFormError = [
+        false, false, false, false, false,
+        false, false, false, false, false 
+    ];
+
     const [bookingFormError, setBookingFormError] = useState(defaultBookingFormError)
+    const [guestFormError, setGuestFormError] = useState(defaultGuestFormError)
 
     const handleInputChange = (e) => {
         setBookingForm({...bookingForm, [e.target.name]: e.target.value})
@@ -120,28 +126,6 @@ export const Tickets = ({
     }
 
     const handleSubmit = () => {
-
-        var isOverallError = false;
-        var tempBookingFormError = {
-        host_name : false,
-        host_email:  false,
-        host_phone: false,
-        host_address:  false,
-        };
-
-        for (var field in bookingFormError) {
-            if (bookingForm[field] === '') {
-                tempBookingFormError[field] = true
-                isOverallError = true;
-            }
-        }
-
-        if (isOverallError) {
-            setBookingFormError(tempBookingFormError)
-            return
-        };
-
-        setBookingFormError(defaultBookingFormError)
 
         var tempData = guestArray;
         
@@ -214,9 +198,10 @@ export const Tickets = ({
                             <Fieldset.Content  key={guestIndex}>
                                 <Separator  mt='10' variant='solid' colorPalette='pink' size='md'/>
                                 <Flex>
-                                    <Box textAlign='right' pr='4' pt='2' fontWeight='medum' width='10rem'>{`guest ${guestIndex+1} name`}</Box>
+                                    <Field label={`guest ${guestIndex+1} name`} invalid={guestFormError[guestIndex]} errorText='guest name is required'>
                                     <Input name={`name-${guestIndex}`} type='text' value={guestArray[guestIndex].guest_name} 
-                                        onChange={ (e) => { setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], guest_name: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
+                                        onChange={ (e) => { setGuestFormError(defaultGuestFormError);setGuestArray([...guestArray.slice(0, guestIndex), {...guestArray[guestIndex], guest_name: e.target.value}, ...guestArray.slice(guestIndex +1)])} } />
+                                    </Field>
                                 </Flex>
 
                                 <Flex pr='4' justify='space-between' gap='4'>
@@ -303,15 +288,70 @@ export const Tickets = ({
         )
     }
 
+    const validateStepChange = (e) => {
+
+
+        if (step === 0) {
+            var isOverallError = false;
+            var tempBookingFormError = {
+                host_name : false,
+                host_email:  false,
+                host_phone: false,
+                host_address:  false,
+                };
+    
+            for (var field in bookingFormError) {
+                if (bookingForm[field] === '') {
+                    tempBookingFormError[field] = true
+                    isOverallError = true;
+                }
+            }
+    
+            if (isOverallError) {
+                setBookingFormError(tempBookingFormError)
+                return
+            };
+
+            setBookingFormError(defaultBookingFormError)            
+        }
+
+        if (step === 1) {
+
+            var isOverallError = false;
+
+            const tempGuestFormError  = [
+                false, false, false, false, false, 
+                false, false, false, false, false, 
+            ];
+    
+            for (var i = 0; i < numberOfTickets; i++ ) {
+                if (guestArray[i].guest_name === '') {
+                    tempGuestFormError[i] = true
+                    isOverallError = true;
+                }
+            }
+    
+            if (isOverallError) {
+                setGuestFormError(tempGuestFormError)
+                return
+            };
+
+            setGuestFormError(defaultGuestFormError)            
+        }
+
+        setStep(e.step)
+
+    }
+
     return ( 
         <Box px={[1,2,4,8]} maxW='3xl'>
             
-            <SlideDownHeading>Booking Form</SlideDownHeading>
-            <FadeInBoxLeft>
+            <Heading>Booking Form</Heading>
+            <Box>
                 <Text>Follow the three steps below, to book your places at the event.</Text>
-            </FadeInBoxLeft>
+            </Box>
 
-            <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} 
+            <StepsRoot step={step} onStepChange={(e) => validateStepChange(e)} 
                 count={3} size='xs' colorPalette='pink' mt='8'
                 variant='solid'>
             <StepsList>

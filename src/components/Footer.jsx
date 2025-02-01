@@ -5,7 +5,7 @@ import { chakra, Stack, Image, Icon, Flex, VisuallyHidden } from '@chakra-ui/rea
 import { FaInstagram, FaEnvelope } from 'react-icons/fa';
 //import { FaTwitter, FaYoutube } from 'react-icons/fa';
 
-import coppaFeelLogo from '../img/Coppafeel_logo.jpg';
+import coppaFeelLogo from '../img/CoppafeelNewLogo.png';
 import fdLogo from '../img/fd_fulllogo_col-blk.jpg';
 import justGiving from '../img/justGiving.png';
 

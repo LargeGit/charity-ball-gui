@@ -11,16 +11,18 @@ import { Link } from "react-router-dom";
 
 import { SlideDownHeading, FadeInBoxLeft, FadeInBoxRight } from 'chakra-react-common/miscellaneous';
 
-const responsiveHeaderFont = ['2.5rem', '3rem', '3.5rem', '4rem']
-const responsiveBodyFont = ['1rem', '1.25rem', '1.5rem', '2.5rem']
-const responsiveSubtextFont = ['.8rem', '1rem', '1.2rem', '1.8rem']
+const responsiveTitleFont = ['2.4rem', '2.8rem', '3.2rem', '3.8rem']
+const responsiveHeadingFont = ['1.2rem', '1.5rem', '2rem', '3rem']
+const responsiveBodyFont = ['1rem', '1.3rem', '1.6rem', '2.2rem']
+const responsiveSubtextFont = ['.8rem', '1rem', '1.4rem', '1.6rem']
 
 
 export const Template = ({content}) =>{
 
     return (
         <Box
-            m='10'
+            maxW='1200px'
+            mx={['2','2', '8','16']}
             _last={{pb:'10'}}
             backgroundImage='url("PlainBackground.png")' backgroundRepeat='no-repeat' backgroundSize='cover'
             shadow='0 4px 8px 0 rgba(0, 0 ,0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'>
@@ -44,7 +46,7 @@ const Content = ({item}) => {
             {item.type === 'title' && (
                 <SlideDownHeading
                     textAlign='center'
-                    fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveHeaderFont}
+                    fontFamily='Oooh Baby' color='pink.600' pt={12} px={12} fontSize={responsiveTitleFont}
                     fontWeight='medium'
                     textShadow='4px 4px 10px rgba(170, 51, 106, .4), -4px -4px 10px rgba(170, 51, 106, .4), 4px -4px 10px rgba(170, 51, 106, 0.4), -4px 4px 10px rgba(170, 51, 106, 0.4)'>
                     {item.body}
@@ -88,13 +90,13 @@ const Content = ({item}) => {
         >
             {item.type === 'heading' && (
                 <FadeInBoxRight
-                textAlign='center'
-                color='pink.700' p='4' fontSize={['1.4rem', '2.0rem', '2.0rem']}
-                fontFamily='Oooh Baby'
-                fontWeight='bold'
-                >
-                {item.body}
-            </FadeInBoxRight>
+                    textAlign='center'
+                    color='pink.700' p='4' fontSize={responsiveHeadingFont}
+                    fontFamily='Oooh Baby'
+                    fontWeight='bold'
+                    >
+                    {item.body}
+                </FadeInBoxRight>
             )}
         </Box>
         </>

@@ -43,17 +43,15 @@ const homePage = [
 const menu = [
     {type: 'title', body: 'Menu'},
     {type: 'heading', body: 'Starters'},
-    {type: 'subtext', body: <>Gin and tonic cured salmon, pickled cucumber, lemon aioli<br/>
-        or<br/>
-        Cherry tomato tart tatin on baby leaf, herb and toasted seed salad</>},
+    {type: 'subtext', body: <>Gin and tonic cured salmon, pickled cucumber, lemon aioli.<br/>
+        Cherry tomato tart tatin on baby leaf, herb and toasted seed salad.</>},
     {type: 'heading', body: 'Mains'},
-    {type: 'subtext', body: <>Slow cooked shin of beef, roasted baby onions, smoked bacon, beef reduction<br/>
-        or<br/>
-        Roasted red pepper filled with wild rice, ratatouille topped with brie and a puff pastry lid</>},
+    {type: 'subtext', body: <>Slow cooked shin of beef, roasted baby onions, smoked bacon, beef reduction.<br/>
+        Roasted red pepper filled with wild rice, ratatouille topped with brie and a puff pastry lid.</>},
     {type: 'heading', body: 'Desserts'},
-    {type: 'subtext', body: <>Triple chocolate brownie <br/>
-        Lemon posset and lavender shortbread  <br/>
-        Eton Mess pots</>},
+    {type: 'subtext', body: <>Triple chocolate brownie.<br/>
+        Lemon posset and lavender shortbread.<br/>
+        Eton Mess pots.</>},
 
 ]
 const schedule = [

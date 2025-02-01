@@ -30,15 +30,10 @@ export const Report = ({
 
     //const navigate = useNavigate()
 
-    const handlePasskeyInputChange = (e) => {
-        setPasskey(e.target.value)
-        setIsPasskeyError(false)
-    ;}
-
     useEffect(() => {
         restRequest(GET, `${BASE_URL}charity-ball/`, (r)=>setData(r), ()=>setData([]), null, null)
     },
-        []
+        [keyProps]
     );
 
     const structure = {
